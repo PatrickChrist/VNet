@@ -88,8 +88,6 @@ class VNet(object):
             solver.step(1)  # this does the training
             train_loss[it] = solver.net.blobs['loss'].data
             print "Train Loss"
-            gp.plot(train_loss,terminal='dumb')
-
 
 
 

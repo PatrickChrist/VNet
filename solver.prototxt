@@ -1,0 +1,10 @@
+net: "/opt/vnet/Prototxt/train_noPooling_ResNet_cinque.prototxt" 
+base_lr: 0.0001 
+momentum: 0.99 
+weight_decay: 0.0005 
+lr_policy: "step" 
+stepsize: 20000 
+gamma: 0.1 
+display: 1 
+snapshot: 500 
+snapshot_prefix: "/media/nas/03_Users/01_patrickchrist/vnet/models/3dircad/" 

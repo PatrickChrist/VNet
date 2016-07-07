@@ -76,7 +76,7 @@ class DataManager(object):
         dat = self.getNumpyData(self.sitkGT,sitk.sitkLinear)
 
         for key in dat:
-            dat[key] = (dat[key]==0.5).astype(dtype=np.float32)
+            dat[key] = (dat[key]>0.8).astype(dtype=np.float32)
         return dat
 
 

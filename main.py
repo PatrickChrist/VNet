@@ -16,7 +16,7 @@ params['ModelParams']['device']=0
 params['ModelParams']['prototxtTrain']=os.path.join(cwd,'Prototxt/train_noPooling_ResNet_cinque.prototxt')
 params['ModelParams']['prototxtTest']=os.path.join(cwd,'Prototxt/test_noPooling_ResNet_cinque.prototxt')
 params['ModelParams']['snapshot']=0
-params['ModelParams']['dirTrain']='/media/nas/01_Datasets/CT/Abdomen/3Dircadb1/niftis_segmented_tumorsonly'
+params['ModelParams']['dirTrain']='/data/3dircad'
 params['ModelParams']['dirTest']='/media/nas/01_Datasets/CT/Abdomen/3Dircadb1/niftis_segmented_tumorsonly'
 params['ModelParams']['dirResult']=os.path.join(basePath,'results') #where we need to save the results (relative to the base path)
 params['ModelParams']['dirSnapshots']=os.path.join(basePath,'models/3dircad/') #where to save the models while training
@@ -27,7 +27,7 @@ params['ModelParams']['nProc'] = 1 #the number of threads to do data augmentatio
 
 
 #params of the DataManager
-params['DataManagerParams']['dstRes'] = np.asarray([1,1,1.5],dtype=float)
+params['DataManagerParams']['dstRes'] = np.asarray([2,2,5],dtype=float)
 params['DataManagerParams']['VolSize'] = np.asarray([128,128,64],dtype=int)
 params['DataManagerParams']['normDir'] = False #if rotates the volume according to its transformation in the mhd file. Not reccommended.
 
