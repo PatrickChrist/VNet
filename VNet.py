@@ -7,7 +7,6 @@ import DataManager as DM
 import utilities
 from os.path import splitext
 from multiprocessing import Process, Queue
-import gnuplotlib as gp
 
 class VNet(object):
     params=None
