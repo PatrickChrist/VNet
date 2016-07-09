@@ -36,7 +36,7 @@ class DiceLoss(caffe.Layer):
         self.result = np.reshape(np.squeeze(np.argmax(bottom[0].data[...],axis=1)),[bottom[0].data.shape[0],bottom[0].data.shape[2]])
         self.gt = np.reshape(np.squeeze(bottom[1].data[...]),[bottom[1].data.shape[0],bottom[1].data.shape[2]])
 
-        self.gt = (self.gt > 0.5).astype(dtype=np.float32)
+        self.gt = (self.gt > 0.8).astype(dtype=np.float32)
         self.result = self.result.astype(dtype=np.float32)
 
         for i in range(0,bottom[0].data.shape[0]):

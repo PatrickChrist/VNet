@@ -21,13 +21,13 @@ class DataManager(object):
         self.resultsDir=resultsDir
 
     def createImageFileList(self):
-        self.fileList = [f for f in listdir(self.srcFolder) if isfile(join(self.srcFolder, f)) and 'image' in f]
+        self.fileList = [f for f in sorted(listdir(self.srcFolder)) if isfile(join(self.srcFolder, f)) and 'image' in f]
         print 'FILE LIST: ' + str(self.fileList)
 
 
     def createGTFileList(self):
         self.gtList=list()
-        self.gtList=[f for f in listdir(self.srcFolder) if isfile(join(self.srcFolder, f)) and 'label' in f]
+        self.gtList=[f for f in sorted(listdir(self.srcFolder)) if isfile(join(self.srcFolder, f)) and 'label' in f]
         print 'GT LIST: ' + str(self.gtList)
 
 
