@@ -3,7 +3,7 @@ base_lr: 0.0001
 momentum: 0.99 
 weight_decay: 0.0005 
 lr_policy: "step" 
-stepsize: 20000 
+stepsize: 5000 
 gamma: 0.1 
 display: 1 
 snapshot: 500 

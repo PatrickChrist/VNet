@@ -51,7 +51,8 @@ class DataManager(object):
         self.sitkGT=dict()
 
         for f in self.gtList:
-            self.sitkGT[f]=sitk.Cast(sitk.ReadImage(join(self.srcFolder, f))>0.5,sitk.sitkFloat32)
+            # Select here the label
+            self.sitkGT[f]=sitk.Cast(sitk.ReadImage(join(self.srcFolder, f))>1.5,sitk.sitkFloat32)
 
 
 
@@ -76,7 +77,7 @@ class DataManager(object):
         dat = self.getNumpyData(self.sitkGT,sitk.sitkLinear)
 
         for key in dat:
-            dat[key] = (dat[key]>0.8).astype(dtype=np.float32)
+            dat[key] = (dat[key]>0.5).astype(dtype=np.float32)
         return dat
 
 
