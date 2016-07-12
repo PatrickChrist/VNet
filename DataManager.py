@@ -19,6 +19,7 @@ class DataManager(object):
         self.params=parameters
         self.srcFolder=srcFolder
         self.resultsDir=resultsDir
+   
 
     def createImageFileList(self):
         self.fileList = [f for f in sorted(listdir(self.srcFolder)) if isfile(join(self.srcFolder, f)) and 'image' in f]
@@ -40,7 +41,11 @@ class DataManager(object):
         stats = sitk.StatisticsImageFilter()
         m = 0.
         for f in self.fileList:
-            self.sitkImages[f]=rescalFilt.Execute(sitk.Cast(sitk.ReadImage(join(self.srcFolder, f)),sitk.sitkFloat32))
+            # Todo Clipping parameters global
+            image=sitk.Cast(sitk.ReadImage(join(self.srcFolder, f)),sitk.sitkFloat32)
+            image=sitk.GetImageFromArray(np.clip(sitk.GetArrayFromImage(image),-100,200))
+            self.sitkImages[f]=rescalFilt.Execute(image)
+
             stats.Execute(self.sitkImages[f])
             m += stats.GetMean()
 
@@ -52,6 +57,7 @@ class DataManager(object):
 
         for f in self.gtList:
             # Select here the label
+            # Todo Refactor this
             self.sitkGT[f]=sitk.Cast(sitk.ReadImage(join(self.srcFolder, f))>1.5,sitk.sitkFloat32)
 
 
