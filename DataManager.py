@@ -72,6 +72,8 @@ class DataManager(object):
     def loadTestData(self):
         self.createImageFileList()
         self.loadImages()
+        self.createGTFileList()
+        self.loadGT()
 
     def getNumpyImages(self):
         dat = self.getNumpyData(self.sitkImages,sitk.sitkLinear)
