@@ -138,3 +138,31 @@ def produceRandomlyTranslatedImage(image, label):
     outlbl = outlbl.astype(dtype=float)
 
     return outimg, outlbl
+
+def produceRegisteredImage(image,label, fixed):
+
+    image=sitk.GetImageFromArray(image,isVector=False)
+    fixed=sitk.GetImageFromArray(fixed,isVector=False)
+    label=sitk.GetImageFromArray(label,isVector=False)
+    
+    initial_transform = sitk.CenteredTransformInitializer(image,fixed, sitk.Euler3DTransform(), sitk.CenteredTransformInitializerFilter.GEOMETRY)
+    image = sitk.Resample(image, fixed, initial_transform, sitk.sitkLinear, 0.0, moving_image.GetPixelIDValue())
+
+    registration_method = sitk.ImageRegistrationMethod()
+    registration_method.SetMetricAsMattesMutualInformation(numberOfHistogramBins=50)
+    registration_method.SetMetricSamplingStrategy(registration_method.RANDOM)
+    registration_method.SetMetricSamplingPercentage(0.1)
+    registration_method.SetInterpolator(sitk.sitkLinear) #2. Replace with sitkLinear
+    registration_method.SetOptimizerAsGradientDescent(learningRate=1.0, numberOfIterations=1) 
+    registration_method.SetOptimizerScalesFromPhysicalShift() 
+
+    registration_method.SetMovingInitialTransform(initial_transform)
+
+    registration_method.SetShrinkFactorsPerLevel(shrinkFactors = [4,2,1])
+    registration_method.SetSmoothingSigmasPerLevel(smoothingSigmas=[2,1,0])
+    registration_method.SmoothingSigmasAreSpecifiedInPhysicalUnitsOn()
+
+    final_transform = registration_method.Execute(image, fixed)
+    final_image= sitk.Resample(image, fixed, final_transform, sitk.sitkLinear, 0.0, image.GetPixelIDValue())
+    final_label= sitk.Resample(label, fixed, final_transform, sitk.sitkLinear, 0.0, label.GetPixelIDValue())
+    return image, label
