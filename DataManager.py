@@ -41,9 +41,10 @@ class DataManager(object):
         stats = sitk.StatisticsImageFilter()
         m = 0.
         for f in self.fileList:
-            # Todo Clipping parameters global
             image=sitk.Cast(sitk.ReadImage(join(self.srcFolder, f)),sitk.sitkFloat32)
-            image=sitk.GetImageFromArray(np.clip(sitk.GetArrayFromImage(image),-100,200))
+            # Clipping according to Datamanger params
+            if self.params['clipping']:
+                image=sitk.GetImageFromArray(np.clip(sitk.GetArrayFromImage(image),self.params['c_min'],self.params['c_max']))
             self.sitkImages[f]=rescalFilt.Execute(image)
 
             stats.Execute(self.sitkImages[f])
@@ -57,8 +58,7 @@ class DataManager(object):
 
         for f in self.gtList:
             # Select here the label
-            # Todo Refactor this
-            self.sitkGT[f]=sitk.Cast(sitk.ReadImage(join(self.srcFolder, f))>1.5,sitk.sitkFloat32)
+            self.sitkGT[f]=sitk.Cast(sitk.ReadImage(join(self.srcFolder, f))>self.params['label_num'] -0.5,sitk.sitkFloat32)
 
 
 
