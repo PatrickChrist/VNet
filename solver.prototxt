@@ -1,5 +1,5 @@
 train_net: "/opt/vnet/Prototxt/train_noPooling_ResNet_cinque.prototxt" 
-base_lr: 1e-05 
+base_lr: 1e-06 
 momentum: 0.99 
 weight_decay: 0.01 
 lr_policy: "step" 
