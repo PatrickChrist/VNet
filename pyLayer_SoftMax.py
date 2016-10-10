@@ -1,5 +1,6 @@
 import caffe
 import numpy as np
+import utils
 
 class DiceLoss(caffe.Layer):
     """
@@ -9,6 +10,7 @@ class DiceLoss(caffe.Layer):
     intersection = None
     result = None
     gt = None
+    weightmap=None
 
     def setup(self, bottom, top):
         # check input pair
@@ -31,6 +33,7 @@ class DiceLoss(caffe.Layer):
         # Load Softmaxed data blobs
         self.result = np.squeeze(bottom[0].data[...])
         self.gt = np.squeeze(bottom[1].data[...])
+        self.weightmap=np.zeros_like(bottom[1].data[...])
         
         # Initalize the data loss
         data_loss = 0
@@ -39,8 +42,10 @@ class DiceLoss(caffe.Layer):
             probs = self.result[i,:,:] # Batchsize i
             gt = self.gt[i,:].astype(np.int8)
             lenarray=len(gt)
-            correct_logprobs = -np.log(probs[gt,range(lenarray)])
-            data_loss =data_loss+np.sum(correct_logprobs)/len(gt)
+            weightmap=utils.generate_weightmap_from_label(gt,class_weight=None,border_thickness=2,stepness=0.1,shape=(128,128,64))
+            self.weightmap[i,:]=weightmap
+            correct_logprobs = -np.log(probs[gt,range(lenarray)])*weightmap
+            data_loss =data_loss+np.sum(correct_logprobs)/lenarray
 
 
         top[0].data[...] = data_loss
@@ -53,4 +58,5 @@ class DiceLoss(caffe.Layer):
                 lenarray=len(gt)
                 bottom[btm].diff[i, :, :] = probs
                 bottom[btm].diff[i, :, :][gt,range(lenarray)] -= 1
+                bottom[btm].diff[i, :, :] *= self.weightmap[i,:]
                 bottom[btm].diff[i, :, :] /= lenarray
