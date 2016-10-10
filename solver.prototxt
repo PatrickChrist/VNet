@@ -1,4 +1,4 @@
-train_net: "/opt/vnet/Prototxt/train_noPooling_ResNet_cinque.prototxt" 
+train_net: "/opt/vnet/Prototxt/train_noPooling_ResNet_cinque_softmax.prototxt" 
 base_lr: 1e-06 
 momentum: 0.99 
 weight_decay: 0.01 
@@ -10,4 +10,4 @@ snapshot: 500
 snapshot_prefix: "/media/nas/03_Users/01_patrickchrist/vnet/models/3dircad/" 
 test_iter: 3 
 test_interval: 50000
-test_net: "/opt/vnet/Prototxt/test_noPooling_ResNet_cinque.prototxt" 
+test_net: "/opt/vnet/Prototxt/test_noPooling_ResNet_cinque_softmax.prototxt" 
