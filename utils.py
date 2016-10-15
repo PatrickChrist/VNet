@@ -21,5 +21,5 @@ def generate_weightmap_from_label(label,class_weight=None,border_thickness=2,ste
         label3d_dilate=label3d_dilate + 1.0/border_thickness * (binary_dilation(label3d_dilate)-label3d_dilate)
     weightmap = label3d_eroded + label3d_dilate - label3d
     
-    weightmap = weightmap*class_weight
+    weightmap = weightmap*class_weight + np.ones_like(weightmap)
     return  weightmap.ravel()
